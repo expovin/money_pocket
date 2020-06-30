@@ -1,0 +1,26 @@
+.Avatar {
+    border-radius: 50%;
+}
+
+.headLine {
+    border-top: 2px;
+    border-top-style:solid;
+    border-top-color: orange;
+    margin-left: 15px;
+    /*margin-top: 200px;*/
+}
+
+#HeadSection {
+    margin-top: 100px;
+}
+
+.title {
+    text-align: center;
+    font-family: 'Piedra', cursive;
+    color:orange;      
+}
+
+p {
+    font-family: 'Indie Flower', cursive;
+    color: olive;
+}
