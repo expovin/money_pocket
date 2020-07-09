@@ -21,7 +21,6 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        console.log("[componentDidMount]")
         this.props.getUserDetails(this.props.userId)
         .then( userDetails => this.setState({userDetails:userDetails, userDataReady:true}))
         .catch( error => console.log(error))
@@ -32,7 +31,6 @@ class Home extends Component {
     }
 
     pageReady = () =>{
-        console.log("[pageReady]")
         return (
             <Row id="HeadSection">
                 <Container>
@@ -44,10 +42,14 @@ class Home extends Component {
                             </div>
                         </Col>
                         <Col>
-                            
-                            <Image className="Avatar img-fluid" src={this.state.userDetails.profilePicture_HD} alt={this.state.userDetails.firstName}  width="500" />
+                            <Image className="Avatar img-fluid" src={this.state.userDetails.profilePicture_HD} alt={this.state.userDetails.firstName}  width="300" />
                         </Col>
-
+                    </Row>
+                    <Row>
+                        <Container>
+                            <hr />
+                            <p>{this.state.contents[1].content}</p>
+                        </Container>
                     </Row>
                 </Container>
             </Row> 
