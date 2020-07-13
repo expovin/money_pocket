@@ -59,6 +59,7 @@ class App extends Component {
   state = {
     userId : "",
     isLogged: false,
+    hostName:"",
     me:{}
   }  
 
@@ -74,9 +75,9 @@ class App extends Component {
 
   }
 
-  getMe = () => {
+  getMe = (hostName) => {
     return new Promise ((fulfill, reject) => {
-      axios.put('/users/me')
+      axios.get('/users/'+hostName+'/me')
       .then( result => {
         fulfill(result.data.data)
       })
@@ -96,7 +97,7 @@ class App extends Component {
 
   getUserDetails = (userId) => {
     return new Promise ((fulfill, reject) => {
-      axios('/users/'+userId)
+      axios('/users/info/'+this.state.hostName+'/'+userId)
       .then( result => {
         fulfill(result.data.data)
       })
@@ -122,6 +123,7 @@ class App extends Component {
     console.log("[COMPONENT DID MOUNT]")
     console.log(window.location);
     let hostName = window.location.hostname;
+    this.setState({hostName:hostName})
 
 
     let params = queryString.parse(window.location.search)
@@ -131,7 +133,7 @@ class App extends Component {
     if(params.token || localStorage.getItem('token')){
       this.setState({isLogged:true})
       console.log("RICHIAMO getME")
-      this.getMe(params.token)
+      this.getMe(hostName)
       .then( me => this.setState({me : me, isLogged:true}), () => console.log(this.state))
       .catch( error => console.log(error))      
     } 
