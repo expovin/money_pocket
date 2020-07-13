@@ -4,7 +4,8 @@ import NavBar from './navBar/navbar';
 function Header(props) {
     return (
       <div>
-        <NavBar/>
+        <NavBar me = {props.me} 
+                isLogged = {props.isLogged}/>
         
       </div>
     );
