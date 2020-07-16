@@ -11,6 +11,13 @@ class MyNavbar extends Component {
         console.log("[ComponentDidMount] navbar");
     }
 
+    admin =() =>{
+        console.log("[NAVBAR] : "+this.props.me.Gruppo)
+        return(
+            this.props.isLogged && (this.props.me.Gruppo !== "Ordinario") ?
+            <Nav.Link href="risparmi">I miei Risparmi</Nav.Link> : null
+        )
+    }
           
     login = () => {
         console.log("[navbar.js] isLoggedIn :"+this.props.isLogged)
@@ -18,7 +25,7 @@ class MyNavbar extends Component {
             this.props.isLogged ? 
                 <NavDropdown title={<Image className="Avatar img-fluid" src={this.props.me.profilePicture} alt={this.props.me.firstName}  width="30" />} id="basic-nav-dropdown">
                     <NavDropdown.Item href="/profilo"><FontAwesomeIcon icon={faUser} size="lg"/> Profilo</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2"><FontAwesomeIcon icon={faGift} size="lg"/> Miei regali</NavDropdown.Item>
+                    <NavDropdown.Item href="/contributi"><FontAwesomeIcon icon={faGift} size="lg"/> Contributi</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/logout"><FontAwesomeIcon icon={faSignOutAlt} size="lg"/> Esci</NavDropdown.Item>
                 </NavDropdown>
@@ -37,7 +44,7 @@ class MyNavbar extends Component {
                 <Nav></Nav>
                 <Nav>
                     <Nav.Link href="wishlist">Lista Desideri</Nav.Link>
-
+                    {this.admin()}
                     {this.login()}
                 </Nav>
             </Navbar.Collapse>

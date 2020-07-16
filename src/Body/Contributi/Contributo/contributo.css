@@ -1,0 +1,17 @@
+.full {
+    background-color: green;
+    color: whitesmoke;
+    text-align: right;
+}
+
+.half {
+    background-color: rgb(139, 139, 8);
+    color: whitesmoke;
+    text-align: right;    
+}
+
+.empty {
+    background-color: rgb(139, 5, 5);
+    color: whitesmoke;
+    text-align: right;       
+}

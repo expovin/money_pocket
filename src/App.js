@@ -60,6 +60,7 @@ class App extends Component {
     userId : "",
     isLogged: false,
     hostName:"",
+    contributi:[],
     me:{}
   }  
 
@@ -75,9 +76,19 @@ class App extends Component {
 
   }
 
-  getMe = (hostName) => {
+  getContributi = () =>{
     return new Promise ((fulfill, reject) => {
-      axios.get('/users/'+hostName+'/me')
+      axios.get('/disposizioni/versamenti')
+      .then( result => {
+        fulfill(result.data.data)
+      })
+      .catch(error => console.log(error))
+    })    
+  }
+
+  getMe = () => {
+    return new Promise ((fulfill, reject) => {
+      axios.get('/users/me')
       .then( result => {
         fulfill(result.data.data)
       })
@@ -115,13 +126,35 @@ class App extends Component {
     })
   }  
 
+  setNewFriendlyName = (name) =>{
+    return new Promise ((fulfill, reject) => {
+      axios.put('/disposizioni/friendlyName/'+name)
+      .then( result => {
+        this.getMe()
+        .then( me => this.setState({me : me, isLogged:true}))
+        .catch( error => console.log(error)) 
+
+        fulfill(result.data.data)
+      })
+      .catch(error => console.log(error))
+    })    
+  }
+
+  getConti = () => {
+    return new Promise ((fulfill, reject) => {
+      axios('/disposizioni/conti')
+      .then( result => {
+        fulfill(result.data.data)
+      })
+      .catch(error => console.log(error))
+    })
+  }    
+
   setLogStatus = (isLogged) => {
     this.setState({isLogged:isLogged})
   }
 
   componentDidMount() {
-    console.log("[COMPONENT DID MOUNT]")
-    console.log(window.location);
     let hostName = window.location.hostname;
     this.setState({hostName:hostName})
 
@@ -133,13 +166,15 @@ class App extends Component {
     if(params.token || localStorage.getItem('token')){
       this.setState({isLogged:true})
       console.log("RICHIAMO getME")
-      this.getMe(hostName)
-      .then( me => this.setState({me : me, isLogged:true}), () => console.log(this.state))
-      .catch( error => console.log(error))      
+      this.getMe()
+      .then( me => this.setState({me : me, isLogged:true}))
+      .catch( error => console.log(error))    
+            
     } 
 
     this.getUserId(hostName)
-    .then( data => this.setState({userId :data.userId}, () => console.log(this.state))  )
+    .then( data => this.setState({userId :data.userId}))
+    .catch( error => console.log(error))  
   }
 
   
@@ -159,6 +194,10 @@ class App extends Component {
                   me = {this.state.me}
                   setLogStatus = {this.setLogStatus}
                   getWishlist = {this.getWishlist}
+                  getContributi= {this.getContributi}
+                  ruolo={this.state.me.Gruppo}
+                  getConti={this.getConti}
+                  setNewFriendlyName={this.setNewFriendlyName}
                   />
         </div>
       )

@@ -21,6 +21,37 @@ class Wishlist extends Component {
         )
     }    
 
+    progress = (totale, contributi) =>{
+        let p = parseInt((contributi / totale) * 100);
+        let v = "success"
+
+        switch (true) {
+            case (p > 99):
+                console.log(p+" < "+99)
+                v="primary"
+                break;
+            case (p > 80):
+                console.log(p+" < "+80)
+                v="info"
+                break;
+            case (p > 50):
+                console.log(p+" < "+50)
+                v="warning"
+                break;
+            case (p > 20):
+                console.log(p+" < "+20)
+                v="secondary"
+                break;
+            case (p > 5):
+                console.log(p+" < "+5)
+                v="danger"
+                break;               
+        }
+
+        console.log("Frazione : "+p+" Colore :"+v)
+        return({frazione:p, colore:v})
+    }
+
     cards = () =>{
         let snippet = this.state.Wishlist.map( w =>{
             return(
@@ -30,7 +61,7 @@ class Wishlist extends Component {
                         <Card.Body>
                             <Card.Title>{w.Titolo}</Card.Title>
                             <Card.Text> {w.Descrizione}</Card.Text>
-                            <ProgressBar variant="success" now={60} />
+                            <ProgressBar label={this.progress(w.Prezzo, w.Residuo).frazione+"%"} variant={this.progress(w.Prezzo, w.Residuo).colore} now={this.progress(w.Prezzo, w.Residuo).frazione} />
                             <hr />
                             <Button variant="primary">Dettagli</Button>
                         </Card.Body>
