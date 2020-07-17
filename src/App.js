@@ -150,6 +150,26 @@ class App extends Component {
     })
   }    
 
+  getMessaggi = (versamentoId) => {
+    return new Promise ((fulfill, reject) => {
+      axios('/disposizioni/messaggi/'+versamentoId)
+      .then( result => {
+        fulfill(result.data.data)
+      })
+      .catch(error => console.log(error))
+    })
+  }   
+  
+  getMedias = (messaggioId) => {
+    return new Promise ((fulfill, reject) => {
+      axios('/disposizioni/media/'+messaggioId)
+      .then( result => {
+        fulfill(result.data.data)
+      })
+      .catch(error => console.log(error))
+    })
+  }     
+
   setLogStatus = (isLogged) => {
     this.setState({isLogged:isLogged})
   }
@@ -198,6 +218,8 @@ class App extends Component {
                   ruolo={this.state.me.Gruppo}
                   getConti={this.getConti}
                   setNewFriendlyName={this.setNewFriendlyName}
+                  getMessaggi={this.getMessaggi}
+                  getMedias={this.getMedias}
                   />
         </div>
       )

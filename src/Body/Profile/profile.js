@@ -59,8 +59,7 @@ class Profile extends Component {
                                             <dd class="col-sm-9">{this.props.me.Gruppo}</dd>                                    
 
                                             <dt class="col-sm-3">Emain</dt>
-                                            <dd class="col-sm-8">{this.props.me.email}</dd>
-                                            <dd class="col-sm-1"><FontAwesomeIcon icon={faPencilAlt} size="sm" color="orange"/></dd>
+                                            <dd class="col-sm-9">{this.props.me.email}</dd>
 
                                             <dt class="col-sm-3">Friendly Name</dt>
                                             <dd class="col-sm-8">{this.friendName().tag}</dd>

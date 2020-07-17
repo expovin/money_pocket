@@ -23,7 +23,9 @@ function Body(props) {
               <Route exact path="/logout" component={Logout}/>
               <Route exact path="/contributi" component={() =>
                 <Contributi getContributi={props.getContributi}
-                            ruolo={props.ruolo}/>
+                            ruolo={props.ruolo}
+                            getMessaggi={props.getMessaggi}
+                            getMedias={props.getMedias} />
               }/>
               <Route exact path="/" component={()=> 
                 <Home userId={props.userId}

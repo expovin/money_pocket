@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {Col, Row, Image, Card, CardColumns} from 'react-bootstrap';
+import {Col, Row, Button, Card} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPiggyBank, faGamepad } from '@fortawesome/free-solid-svg-icons';
+import Messaggo from './Messaggio/messaggio';
 import Moment from 'moment';
 import './contributo.css';
 
 class Contributo extends Component {
-
+     
 
     iconConto = (TipoConto) =>{
         switch(TipoConto) {
@@ -32,8 +33,6 @@ class Contributo extends Component {
 
     residuoColor = (importo, residuro) =>{
         let fraction = (residuro / importo) * 100;
-        
-        console.log("FRACTION ==> "+fraction)
 
         if(fraction >= 80)
             return ('full')
@@ -42,11 +41,12 @@ class Contributo extends Component {
         else if (fraction<20) return ('empty')
 
     }
-   
-    render(){
-        console.log(this.props.contributo)
 
-        return( 
+    buttonText = () =>{
+        return ( this.props.dettaglio ? "Chiudi" : "Visualizza Messaggi")
+    }
+    card = () =>{
+        return(
             <Col sm={4}>
                 <Card style={{ width: '20rem', height:'350px', marginLeft:'10px', marginTop:'10px' }}>
                     {this.header()}
@@ -56,15 +56,45 @@ class Contributo extends Component {
                         <p>Data versamento {Moment(this.props.contributo.DataVersamento).format('d MMM YYYY') }</p>
                         <p>Questo versamento è stato effettuato sul conto <b>{this.props.contributo.NomeConto}</b></p>
                         <p>da <a href={"mailto:"+this.props.contributo.email}>{this.props.contributo.firstName+" "+this.props.contributo.lastName}</a></p>
-                    </Card.Text>            
-                    <Card.Link href="#">Leggi Messaggi</Card.Link>
-                    <Card.Link href="#">Vedi Media</Card.Link>
+                    </Card.Text>  
+                    <Button variant="primary" onClick={() => this.props.toggleDettaglio(this.props.contributo.VersamentoId)}>{this.buttonText()}</Button>          
                 </Card.Body>
                 <Card.Footer className={this.residuoColor(this.props.contributo.Importo, this.props.contributo.Residuo)}>
                     <small>Residui {this.props.contributo.Residuo} €</small>
                 </Card.Footer>                
-                </Card>                  
+                </Card>               
             </Col>
+        )
+
+    }
+
+    dettaglio = ()=>{
+        return(
+            <Row style={{ width: '100%'}}>
+                {this.card()}
+                <Col sm={8}>
+                    <div className="Dettaglio">
+                        {this.messaggi()}
+                    </div>
+                    <div id="triangolo"></div>
+                    
+                </Col>                
+            </Row>
+        )
+    }
+    
+    messaggi = () =>{
+        let msg = this.props.messaggi.map( m =>{
+            return <Messaggo key={m.MessaggioId} messaggio={m} />
+        })
+        return msg;
+    }
+
+   
+    render(){
+
+        return( 
+            this.props.dettaglio ? this.dettaglio() : this.card()
           )
     
       }    
