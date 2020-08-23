@@ -6,3 +6,7 @@
 .messaggioBox p {
     color: antiquewhite;
 }
+
+a {
+    text-decoration: none;
+}

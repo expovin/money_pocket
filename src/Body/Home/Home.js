@@ -21,13 +21,16 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        this.props.getUserDetails(this.props.userId)
-        .then( userDetails => this.setState({userDetails:userDetails, userDataReady:true}))
-        .catch( error => console.log(error))
-
-        this.props.getContents(this.props.userId)
-        .then( contents => this.setState({contents:contents, contentDataReady:true}))
-        .catch( error => console.log(error))             
+        if(this.props.userId){
+            this.props.getUserDetails(this.props.userId)
+            .then( userDetails => this.setState({userDetails:userDetails, userDataReady:true}))
+            .catch( error => console.log(error))
+    
+            this.props.getContents(this.props.userId)
+            .then( contents => this.setState({contents:contents, contentDataReady:true}))
+            .catch( error => console.log(error))  
+        }
+           
     }
 
     pageReady = () =>{

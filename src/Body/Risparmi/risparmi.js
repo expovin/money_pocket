@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Conto from './Conto/conto';
 import {Row, Col, Container, Card } from 'react-bootstrap';
+import Contributi from '../Contributi/contributi'
 
 
 
@@ -24,9 +25,39 @@ class Risparmi extends Component {
         )
     }  
 
-    conti = () =>{
-        const c = this.state.Conti.map (conto => {
-            return <Conto key={conto.ContoId} conto={conto}/>
+    contributi = (conto) =>{
+        let Oggetto  = this.state.Conti.filter( c => { return c.ContoId === conto})
+
+        this.setState({contributiView:true, 
+                        ContoSelezionato:conto,
+                        OggettoSelezionato: Oggetto});
+        
+        
+    }
+
+    listaContributi = () =>{
+        
+        return(
+            <div>
+                {this.conti(this.state.OggettoSelezionato)}
+                <br />
+                <Contributi getContributi={this.props.getContributi}
+                        ruolo={this.props.ruolo}
+                        getMessaggi={this.props.getMessaggi}
+                        getMedias={this.props.getMedias} 
+                        Conto={this.state.ContoSelezionato}/>                 
+            </div>
+
+        )
+    }
+    
+    
+    conti = (conti) =>{
+        const c = conti.map (conto => {
+            return <Conto key={conto.ContoId} 
+                            conto={conto}
+                            contributi={this.contributi}
+                            contribuisci={this.props.contribuisci}/>
         })
         return (c)
     }
@@ -35,7 +66,7 @@ class Risparmi extends Component {
         return( 
             <Container id="risparmi">
                 <Row> <h1>I miei risparmi</h1> </Row>
-                {this.conti()}
+                {!this.state.contributiView ? this.conti(this.state.Conti) : this.listaContributi()}
             </Container>
           )
     

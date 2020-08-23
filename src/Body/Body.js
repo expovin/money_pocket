@@ -7,18 +7,34 @@ import Logout from './Logout/logout';
 import Profile from './Profile/profile';
 import Contributi from './Contributi/contributi';
 import Risparmi from './Risparmi/risparmi';
+import Offline from './Offline/offline';
 
 function Body(props) {
-    return (
-      <div>
+
+  function statoAttuale (){
+    if(props.offline) return <Offline forceOnline={props.forceOnline}/>
+    else {
+      return(
+        <div>
         <BrowserRouter>
           <div>
               <Route exact path="/wishlist" component={() =>
-                <Wishlist getWishlist={props.getWishlist}/>   
+                <Wishlist getWishlist={props.getWishlist}
+                          getContributi={props.getContributi}
+                          ruolo={props.ruolo}
+                          getMessaggi={props.getMessaggi}
+                          getMedias={props.getMedias} 
+                          isLogged = {props.isLogged}
+                          contribuisci = {props.contribuisci}/>   
               }/>
               <Route exact path="/login" component={Login}/>
               <Route exact path="/risparmi" component={()=>
-                <Risparmi getConti={props.getConti}/>
+                <Risparmi getConti={props.getConti}
+                          getContributi={props.getContributi}
+                          ruolo={props.ruolo}
+                          getMessaggi={props.getMessaggi}
+                          getMedias={props.getMedias} 
+                          contribuisci={props.contribuisci}/>   
                 }/>
               <Route exact path="/logout" component={Logout}/>
               <Route exact path="/contributi" component={() =>
@@ -43,6 +59,12 @@ function Body(props) {
 
         
       </div>
+      )
+
+    }
+  }
+    return (
+      statoAttuale()
     );
   }
   

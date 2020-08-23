@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+.accordion>.card {
+  background-color: inherit;
+}
+
+.table td {
+  padding: 0;
+  vertical-align:middle;
+  word-wrap: break-word;
+}
+
+.key {
+  width: fit-content;
+}
+
+.value {
+  width: 75%;
+}

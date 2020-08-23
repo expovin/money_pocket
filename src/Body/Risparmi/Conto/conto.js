@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Container, Card } from 'react-bootstrap';
+import {Row, Col, Container, Card, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPiggyBank, faUniversity } from '@fortawesome/free-solid-svg-icons';
 import './conto.css';
@@ -34,8 +34,10 @@ class Conto extends Component {
                         </Row>
                     </Card.Body>
                     <Card.Footer className="text-muted">
-                        <Card.Link href="#">Versamenti</Card.Link>
-                        <Card.Link href="#">Spendi</Card.Link>
+                        <Button variant="primary" onClick={() => this.props.contributi(this.props.conto.ContoId)}>Dettagli</Button>{' '}
+                        <Button variant="success" onClick={() => this.props.contribuisci(this.props.conto.ContoId)}>Contribuisci</Button>
+
+                        
                     </Card.Footer>
                 </Card>
                 </Row>

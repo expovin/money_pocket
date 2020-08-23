@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import {Row, Col, Container, Image} from 'react-bootstrap';
+import {Row, Col, Container} from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
+
 import Contributo from './Contributo/contributo'
 import './contributi.css'
 
@@ -9,14 +12,24 @@ class Contributi extends Component {
         Contributi:[],
         contentDataReady:false,
         dettaglio:false,
-        messaggi:[]
+        messaggi:[],
+        CardsVisualization:true
     }
 
     
 
     componentDidMount(){
+
         this.props.getContributi()
-        .then(contributi => this.setState({Contributi : contributi.data, contentDataReady : true}))
+        .then(contributi => {
+            let data={}
+            if(this.props.Conto) {
+                data = contributi.data.filter( c => {return c.ContoId === this.props.Conto})
+            } 
+            else 
+                data = contributi.data
+            this.setState({Contributi : data, contentDataReady : true})
+        })
         .catch( error => console.log(error))
     }
 
@@ -27,14 +40,32 @@ class Contributi extends Component {
         )
     }  
 
+    //Comparing based on the property qty
+    compare_date = (a, b) => {
+        // a should come before b in the sorted order
+        if(a.DataVersamento < b.DataVersamento){
+                return -1;
+        // a should come after b in the sorted order
+        }else if(a.DataVersamento > b.DataVersamento){
+                return 1;
+        // a and b are the same
+        }else{
+                return 0;
+        }
+    }
+
+
     contributi = () =>{
-        const conts = this.state.Contributi.map (contributo => {
+        const d = this.state.Contributi
+            .sort(this.compare_date)
+            .map (contributo => {
             return <Contributo  key={contributo.VersamentoId} 
                                 contributo={contributo}
                                 toggleDettaglio={this.openDettaglio}
-                                dettaglio={this.state.dettaglio}/>
+                                dettaglio={this.state.dettaglio}
+                                CardsVisualization = {this.state.CardsVisualization}/>
         })
-        return (conts)
+        return (d)
     }
 
     titolo = () =>{
@@ -55,7 +86,8 @@ class Contributi extends Component {
                                 toggleDettaglio={this.closeDettaglio} 
                                 dettaglio={this.state.dettaglio}
                                 messaggi={this.state.messaggi}
-                                getMedias={this.state.getMedias}/>            
+                                getMedias={this.props.getMedias}
+                                CardsVisualization = {this.state.CardsVisualization}/>            
         })
         console.log(versamento)
         return (versamento)
@@ -79,6 +111,10 @@ class Contributi extends Component {
             this.state.dettaglio ? this.selectContributo(this.state.versamentoId) : this.contributi()
         )
     }
+
+    setVisualization = (card) =>{
+        this.setState({CardsVisualization:card})
+    }
  
 
 
@@ -87,7 +123,14 @@ class Contributi extends Component {
         return( 
             <Container>
                 <Row>
-                    {this.titolo()}
+                    <Col sm={10}>
+                        {this.titolo()}
+                    </Col> 
+                    <Col>
+                        <FontAwesomeIcon onClick={() => this.setVisualization(false)} className="icons iconsActive" icon={faBars} size="lg"/> 
+                        <FontAwesomeIcon onClick={() => this.setVisualization(true)} className="icons" icon={faGripHorizontal} size="lg"/>
+                    </Col>
+                    
                 </Row>
 
                 <Row>

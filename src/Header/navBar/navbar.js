@@ -7,12 +7,7 @@ import './navbar.css';
 class MyNavbar extends Component {
 
 
-    componentDidMount(){
-        console.log("[ComponentDidMount] navbar");
-    }
-
     admin =() =>{
-        console.log("[NAVBAR] : "+this.props.me.Gruppo)
         return(
             this.props.isLogged && (this.props.me.Gruppo !== "Ordinario") ?
             <Nav.Link href="risparmi">I miei Risparmi</Nav.Link> : null
@@ -20,7 +15,6 @@ class MyNavbar extends Component {
     }
           
     login = () => {
-        console.log("[navbar.js] isLoggedIn :"+this.props.isLogged)
         return (
             this.props.isLogged ? 
                 <NavDropdown title={<Image className="Avatar img-fluid" src={this.props.me.profilePicture} alt={this.props.me.firstName}  width="30" />} id="basic-nav-dropdown">

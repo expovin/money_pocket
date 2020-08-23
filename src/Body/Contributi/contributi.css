@@ -1,6 +1,16 @@
 .dettaglioContributo {
-    height: 350px;
+    min-height: 350px;
     width: 800px;
     left: 0;
     background-color: darkgreen;
+}
+
+.icons {
+    margin-left: 5px;
+    margin-top: 15px;
+    color: #888888;
+}
+
+.iconsActive {
+    color: #271e05;
 }

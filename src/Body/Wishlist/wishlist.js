@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import {Row, Col, Container, Image, Card, Button, ProgressBar} from 'react-bootstrap';
+import Contributi from '../Contributi/contributi'
 import './wishlist.css'
 
 class Wishlist extends Component {
 
     state={
         Wishlist:{},
-        contentDataReady:false
+        contentDataReady:false,
+        contributiView:false
     }
 
     componentDidMount(){
@@ -15,7 +17,6 @@ class Wishlist extends Component {
     }
 
     loading = () => {
-        console.log("[loading]")
         return(
             <div className="loader">Loading...</div>
         )
@@ -27,35 +28,54 @@ class Wishlist extends Component {
 
         switch (true) {
             case (p > 99):
-                console.log(p+" < "+99)
                 v="primary"
                 break;
             case (p > 80):
-                console.log(p+" < "+80)
                 v="info"
                 break;
             case (p > 50):
-                console.log(p+" < "+50)
                 v="warning"
                 break;
             case (p > 20):
-                console.log(p+" < "+20)
                 v="secondary"
                 break;
             case (p > 5):
-                console.log(p+" < "+5)
                 v="danger"
                 break;               
         }
-
-        console.log("Frazione : "+p+" Colore :"+v)
         return({frazione:p, colore:v})
     }
 
-    cards = () =>{
-        let snippet = this.state.Wishlist.map( w =>{
+    contributi = (conto, ObjId) =>{
+        let Oggetto  = this.state.Wishlist.filter( o => { return o.ObjId === ObjId})
+
+        this.setState({contributiView:true, 
+                        ContoSelezionato:conto,
+                        OggettoSelezionato: Oggetto});
+        
+        
+    }
+
+    listaContributi = () =>{
+        
+        return(
+            <div>
+                {this.cards(this.state.OggettoSelezionato)}
+                <br />
+                <Contributi getContributi={this.props.getContributi}
+                        ruolo={this.props.ruolo}
+                        getMessaggi={this.props.getMessaggi}
+                        getMedias={this.props.getMedias} 
+                        Conto={this.state.ContoSelezionato}/>                 
+            </div>
+
+        )
+    }
+
+    cards = (Oggetti) =>{
+        let snippet = Oggetti.map( w =>{
             return(
-                <Col sm>
+                <Col sm={1} md={4} lg={6}>
                     <Card style={{ width: '18rem', margin: '10px'}}>
                         <Card.Img variant="top" src={w.img} style={{height: '300px', width:'auto'}}/>
                         <Card.Body>
@@ -63,7 +83,12 @@ class Wishlist extends Component {
                             <Card.Text> {w.Descrizione}</Card.Text>
                             <ProgressBar label={this.progress(w.Prezzo, w.Residuo).frazione+"%"} variant={this.progress(w.Prezzo, w.Residuo).colore} now={this.progress(w.Prezzo, w.Residuo).frazione} />
                             <hr />
-                            <Button variant="primary">Dettagli</Button>
+                            {this.props.isLogged ? 
+                            <div>
+                                <Button variant="primary" onClick={() => this.contributi(w.ContoId, w.ObjId)}>Dettagli</Button> {' '}
+                                <Button variant="success" onClick={() => this.props.contribuisci(w.ContoId)}>Contribuisci</Button>
+                            </div>
+                            : null}
                         </Card.Body>
                     </Card> 
                 </Col>  
@@ -84,8 +109,7 @@ class Wishlist extends Component {
                         <h2>Lista desideri</h2>
                     </Row>
                     <Row>
-                        {this.cards()}                      
-
+                        {!this.state.contributiView ? this.cards(this.state.Wishlist) : this.listaContributi()}                      
                     </Row>
                 </Container>
             </div>
