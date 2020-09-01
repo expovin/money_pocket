@@ -7,6 +7,7 @@ import './App.css';
 import axios from 'axios';
 //import { ThemeProvider } from 'react-bootstrap';
 
+
 axios.interceptors.request.use( request =>{
   /** 
    * Qui è possibile editare qualsiasi request in uscita
@@ -45,11 +46,19 @@ axios.interceptors.response.use( response =>{
    * Qui è possibile gestire centralmente tutti gli errori
    * in ricezione di response
    */
-  console.log(error.message) // <--------------
+  console.log(error.message) 
    if(error.toString().indexOf("status code 401") !== -1  || error.toString().indexOf("status code 403") !==-1 ){
     console.log("Rimuovo il token!")
     localStorage.removeItem('token');
    }
+
+   if(error.message === 'Network Error'){
+      localStorage.setItem('offline',true);
+      console.log("Trovato Network error centrale, vado in OFFLINE : ")
+      window.location = '/offline'
+      
+   }
+        
 
    
    // Rimando il controllo al componente locale
@@ -142,8 +151,10 @@ class App extends Component {
           msg:error
         }
       this.setState({showError:true, msgError:msgError});
+      /*
       if(error.message === 'Network Error')
         this.forceOffLine({offline:true})       
+      */
       console.log(error);
     })
     })
@@ -332,8 +343,12 @@ class App extends Component {
   componentDidMount() {
 
     console.log("[COMPONENT DID MOUNT]");
-    if(!this.state.offline){
+    let offline = localStorage.getItem('offline') == 'true'
+    console.log("Offline : "+offline)
+    
+    if(!offline){
 
+      console.log("Sono nell'IF sono in linea")
       let hostName = window.location.hostname;
       this.setState({hostName:hostName})
       const favicon = getFaviconEl();
@@ -363,11 +378,11 @@ class App extends Component {
             heading:"Errore recupero user Id",
             msg:error
           }
-        this.setState({showError:true, msgError:msgError});
-        if(error.message === 'Network Error')
-          this.forceOffLine({offline:true})      
-        console.log(error);
-      }) 
+          this.setState({showError:true, msgError:msgError});
+          if(error.message === 'Network Error')
+            this.forceOffLine({offline:true})      
+          console.log(error);
+        }) 
 
         this.setState({isLogged:true})
         this.getMe()

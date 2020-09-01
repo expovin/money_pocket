@@ -1,7 +1,8 @@
 {
   "name": "money_pocket",
-  "version": "0.1.0",
+  "version": "5.5.1",
   "private": true,
+  "author" : "ves",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-brands-svg-icons": "^5.13.1",
@@ -27,7 +28,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy":"./build.sh"
   },
   "eslintConfig": {
     "extends": "react-app"
