@@ -84,6 +84,7 @@ class App extends Component {
     offline:false
   }  
 
+
   forceOnline = () => { this.setState({offline:false}, this.componentDidMount()) }
   forceOffLine = () =>{ 
     console.log("Network Error, forcing ofline")
@@ -349,7 +350,10 @@ class App extends Component {
     if(!offline){
 
       console.log("Sono nell'IF sono in linea")
+      
+
       let hostName = window.location.hostname;
+      console.log("Hostname : "+hostName)
       this.setState({hostName:hostName})
       const favicon = getFaviconEl();
       const faviconApple = getFaviconAppleEl();
@@ -366,23 +370,25 @@ class App extends Component {
   
       let params = queryString.parse(window.location.search)
   
-  
+      console.log("Recupero UserId ")
+      this.getUserId(hostName)
+      .then( data => this.setState({userId :data.userId}))
+      .catch(error => {
+
+        let msgError = {
+          variant:"danger",
+          heading:"Errore recupero user Id",
+          msg:error
+        }
+        this.setState({showError:true, msgError:msgError});
+        if(error.message === 'Network Error')
+          this.forceOffLine({offline:true})      
+        console.log(error);
+      }) 
+        
       if(params.token || localStorage.getItem('token')){
 
-        this.getUserId(hostName)
-        .then( data => this.setState({userId :data.userId}))
-        .catch(error => {
-  
-          let msgError = {
-            variant:"danger",
-            heading:"Errore recupero user Id",
-            msg:error
-          }
-          this.setState({showError:true, msgError:msgError});
-          if(error.message === 'Network Error')
-            this.forceOffLine({offline:true})      
-          console.log(error);
-        }) 
+
 
         this.setState({isLogged:true})
         this.getMe()

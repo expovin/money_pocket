@@ -5,10 +5,6 @@ import '../spinner.css'
 
 
 class Home extends Component {
-
-    constructor(props){
-        super(props);    
-    }
     
     state = {
         userDataReady : false,
