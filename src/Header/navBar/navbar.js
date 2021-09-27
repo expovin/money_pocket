@@ -6,10 +6,16 @@ import './navbar.css';
 
 class MyNavbar extends Component {
 
+    note =() =>{
+        return(
+            this.props.isLogged && (this.props.me.Gruppo !== "Ordinario") ?
+            <Nav.Link href="note">Note</Nav.Link> : null
+        )
+    }    
 
     admin =() =>{
         return(
-            this.props.isLogged && (this.props.me.Gruppo !== "Ordinario") ?
+            this.props.isLogged && (this.props.me.Gruppo !== "Ordinario" && this.props.me.Gruppo !== "Nanny") ?
             <Nav.Link href="risparmi">I miei Risparmi</Nav.Link> : null
         )
     }
@@ -38,14 +44,14 @@ class MyNavbar extends Component {
                 <Nav></Nav>
                 <Nav>
                     <Nav.Link href="wishlist">Lista Desideri</Nav.Link>
+                    {this.note()}
                     {this.admin()}
                     {this.login()}
                 </Nav>
             </Navbar.Collapse>
             </Navbar>
 
-    )
-    }
+    )}
 
   }
   

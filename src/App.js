@@ -336,6 +336,39 @@ class App extends Component {
     })    
   }
 
+  getNote = () => {
+    return new Promise ((fulfill,reject) =>{
+      axios.get('/reward/points')
+      .then(result => fulfill(result.data))
+      .catch(error => {
+
+        let msgError = {
+          variant:"Warning",
+          heading:"Errore recupero points reward",
+          msg:error
+        }
+      this.setState({showError:true, msgError:msgError});
+      console.log(error);
+    })      
+    })
+  }
+
+  setNote = (nota) => {
+    return new Promise ((fulfill,reject) =>{
+      axios.post('/reward/points',{nota:nota})
+      .then(result => fulfill(result.data))
+      .catch(error => {
+
+        let msgError = {
+          variant:"Warning",
+          heading:"Errore setting points reward",
+          msg:error
+        }
+      this.setState({showError:true, msgError:msgError});
+      console.log(error);
+    })      
+    })
+  }
 
   setLogStatus = (isLogged) => {
     this.setState({isLogged:isLogged})
@@ -349,16 +382,11 @@ class App extends Component {
     
     if(!offline){
 
-      console.log("Sono nell'IF sono in linea")
-      
-
       let hostName = window.location.hostname;
-      console.log("Hostname : "+hostName)
       this.setState({hostName:hostName})
       const favicon = getFaviconEl();
       const faviconApple = getFaviconAppleEl();
       const siteTitle = getTitleEl();
-      console.log(siteTitle)
   
       const favicoPath = "./assets/imgSD/"+hostName+".ico";
       favicon.href = favicoPath;
@@ -370,7 +398,6 @@ class App extends Component {
   
       let params = queryString.parse(window.location.search)
   
-      console.log("Recupero UserId ")
       this.getUserId(hostName)
       .then( data => this.setState({userId :data.userId}))
       .catch(error => {
@@ -445,7 +472,9 @@ class App extends Component {
                   isLogged = {this.state.isLogged}
                   contribuisci = {this.contribuisci}
                   offline={this.state.offline}
-                  forceOnline={this.forceOnline}/>
+                  forceOnline={this.forceOnline}
+                  getNote={this.getNote}
+                  setNote={this.setNote}/>
 
           <ModalInsert show={this.state.showInsertModal}
                       nascondiModal={this.nascondiModal}

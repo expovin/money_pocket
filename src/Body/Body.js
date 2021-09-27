@@ -8,6 +8,7 @@ import Profile from './Profile/profile';
 import Contributi from './Contributi/contributi';
 import Risparmi from './Risparmi/risparmi';
 import Offline from './Offline/offline';
+import Note from './Note/note';
 
 function Body(props) {
 
@@ -24,6 +25,11 @@ function Body(props) {
                         isLogged = {props.isLogged}
                         contribuisci = {props.contribuisci}/>   
             }/>
+            <Route exact path="/note" component={() =>
+              <Note getNote={props.getNote}
+                    setNote={props.setNote}
+                    me={props.me}/>   
+            }/>            
             <Route exact path="/login" component={Login}/>
             <Route exact path="/risparmi" component={()=>
               <Risparmi getConti={props.getConti}
