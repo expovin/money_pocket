@@ -42,10 +42,19 @@ class Note extends Component {
         )
     }    
 
+    noPoint = (n) => {
+        return(
+            <Row>
+                <Col className="NoPoint"><div className="Day NoPoint"><Moment format="DD MMM" date={n.Data}/></div></Col>
+                <Col><Image className="Avatar img-fluid" src="./assets/ImgHD/NoPoint.png" alt="NoPoint.png" width="100px"/>    </Col>
+            </Row>
+        )
+    } 
+
     notes = () =>{
         return this.state.note.map((n,idx)=>{
             return(<ListGroup.Item Key={idx}>
-                        {n.Nota == 1 ? this.ok(n) : this.ko(n)}
+                        {n.Nota == 1 ? this.ok(n) : n.Nota == 0 ? this.noPoint(n) : this.ko(n)}
                     </ListGroup.Item>
                 )
         })
@@ -75,6 +84,7 @@ class Note extends Component {
                     <ListGroup.Item>
                         <Row>
                             <Col><Image className="Avatar img-fluid" src="./assets/ImgHD/Smile.png" alt="Smile.png" width="100px" onClick={() => this.props.setNote(1).then(() => this.componentDidMount())}/></Col>
+                            <Col><Image className="Avatar img-fluid" src="./assets/ImgHD/NoPoint.png" alt="NoPoint.png" width="100px" onClick={() => this.props.setNote(0).then(() => this.componentDidMount())}/></Col>
                             <Col><Image className="Avatar img-fluid" src="./assets/ImgHD/Sad.png" alt="Sad.png" width="100px" onClick={() => this.props.setNote(-1).then(() => this.componentDidMount())}/></Col>
                         </Row>
                     </ListGroup.Item>
